@@ -1,0 +1,7 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact: {}
+  title: YiYuEcho
+paths: {}
+swagger: "2.0"
