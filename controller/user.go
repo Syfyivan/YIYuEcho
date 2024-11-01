@@ -14,6 +14,14 @@ import (
 	_ "net/http"
 )
 
+// SignUpHandler 注册业务
+// @Summary 注册接口
+// @Description 用户注册接口
+// @Tags 用户
+// @Accept application/json
+// @Produce application/json
+// @Param data body models.RegisterForm true "用户注册参数"
+// @Success 200 {object} models.User
 func SignUpHandler(c *gin.Context) {
 	// 1.从前端获取请求参数，用fo接收
 	var fo *models.RegisterForm
@@ -24,7 +32,6 @@ func SignUpHandler(c *gin.Context) {
 	//}
 	//…………………
 	fmt.Printf("fo: %v\n", fo)
-
 	// 3.调用logic层方法，完成业务处理-注册用户
 	if err := logic.SignUp(fo); err != nil {
 		//todo: 日志
@@ -33,12 +40,10 @@ func SignUpHandler(c *gin.Context) {
 			c.JSON(http.StatusNotFound, gin.H{"status": 0, "code": 404, "mag": "用户不存在"})
 			return
 		}
-
 		c.JSON(http.StatusInternalServerError, gin.H{"status": 0, "code": 500, "mag": "服务器内部错误"})
-
 		return
 	}
-	////返回响应
+	//返回响应
 
 	c.JSON(http.StatusOK, gin.H{"status": 1, "code": 200, "mag": "注册成功"})
 
@@ -76,9 +81,17 @@ func LoginHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": 1, "code": 200, "mag": "登录成功", "data": user})
 }
 
+// RefreshTokenHandler 刷新token
+// @Summary 刷新token接口
+// @Description 刷新用户token
+// @Tags 用户
+// @Accept application/json
+// @Produce application/json
+// @Param data body models.RefreshTokenForm true "刷新token参数"
+// @Success 200 {object} models.Token
 func RefreshTokenHandler(c *gin.Context) {
 	refreshToken := c.Query("refresh_token")
-	// 客户端携带Token有三种方式 1.放在请求头 2.放在请求体 3.放在URI
+	// 客户端携带Token有三种方式 1.放在请求头 2.放在请求体 3.放在URL
 	// 这里假设Token放在Header的 Authorization 中，并使用 Bearer 开头
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
@@ -94,6 +107,7 @@ func RefreshTokenHandler(c *gin.Context) {
 	}
 	aToken, rToken, err := jwt.RefreshToken(parts[1], refreshToken)
 	//todo: 日志
+
 	if err != nil {
 
 		c.JSON(http.StatusUnauthorized, gin.H{"status": 0, "code": 401, "mag": "token刷新失败"})

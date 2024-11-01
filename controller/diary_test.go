@@ -55,20 +55,15 @@ func TestCreateDiaryHandler(t *testing.T) {
 	//assert.Equal(t, w.Body.String(), "需要登录")
 
 	// 2.方法二：将响应的内容反序列化到ResponseData 然后判断字段与预期是否一致
-
-	type ResponseData struct {
-		Code    int         `json:"code"`
-		Message string      `json:"message"`
-		Data    interface{} `json:"data,omitempty"` // omitempty当data为空时,不展示这个字段
-	}
-
 	res := new(ResponseData)
 	if err := json.Unmarshal([]byte(w.Body.String()), res); err != nil {
 
 		t.Errorf("Failed to unmarshal response: %v", err)
 
-		assert.Equal(t, 401, res.Code)
+		//assert.Equal(t, 401, res.Code)
 		//assert.Equal(t, res.Message, "需要登录")
 	}
+	assert.Equal(t, 200, res.Code)
+	assert.Equal(t, res.Message, "创建成功")
 
 }

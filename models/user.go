@@ -69,7 +69,8 @@ func (r *RegisterForm) UnmarshalJSON(data []byte) (err error) {
 }
 
 // LoginForm 登录请求参数
+
 type LoginForm struct {
-	Phone    string `json:"phone" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Phone    string `json:"phone"        // binding:"required"`
+	Password string `json:"password"    // binding:"required"`
 }

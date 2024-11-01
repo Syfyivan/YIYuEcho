@@ -32,6 +32,14 @@ import (
 //
 //}
 
+// @title YiYuEcho
+// @version 1.0
+// @description 这是一个基于Gin框架的API接口
+// @host localhost:8080
+// @BasePath /api/v1
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 
 	//todo:加载配置
